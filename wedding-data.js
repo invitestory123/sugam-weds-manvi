@@ -17,7 +17,7 @@ window.WEDDING_DATA = {
     "occasion": "The Wedding Celebrations of",
     "dateLabel": "23 · 24 · 11 · 2026",
     "longDate": "23rd & 24th November 2026",
-    "dateISO": "2026-11-23T12:00:00+05:30",
+    "dateISO": "2026-11-23T19:00:00+05:30",
     "endISO": "2026-11-25T02:00:00+05:30",
     "invocation": "॥ श्री गणेशाय नमः॥",
     "salutation": "Dear Family & Friends,",
@@ -32,17 +32,9 @@ window.WEDDING_DATA = {
     {
       "dayLabel": "Day 1 · Monday, 23 Nov 2026",
       "date": "Monday, 23rd November 2026",
-      "title": "Haldi & Cocktail Celebrations",
+      "title": "Cocktail & Ring Ceremony",
       "subtitle": "Mohali Golf Range, Sector 65, Mohali",
       "events": [
-        {
-          "time": "12:00 PM Onwards",
-          "title": "Suraj Ki Baahon Mein — Haldi Ceremony",
-          "subtitle": "Let's paint the beginning of their forever in the brightest shade of yellow",
-          "location": "Mohali Golf Range, Sector 65, Mohali",
-          "dressCode": "Sunny Vibes",
-          "note": "Haldi, Happiness & You! · With love, Gupta Family"
-        },
         {
           "time": "7:00 PM Onwards",
           "title": "Raise a Glass with Us! — Cocktail & Ring Ceremony",
@@ -84,9 +76,9 @@ window.WEDDING_DATA = {
     },
     {
       "name": "Mohali Golf Range",
-      "role": "Haldi & Cocktail Celebrations",
+      "role": "Cocktail & Ring Ceremony",
       "address": "Sector 65, Mohali, Punjab",
-      "timeLabel": "Monday, 23 November 2026 · 12:00 PM & 7:00 PM Onwards",
+      "timeLabel": "Monday, 23 November 2026 · 7:00 PM Onwards",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mohali+Golf+Range+Sector+65+Mohali"
     },
     {
@@ -106,7 +98,7 @@ window.WEDDING_DATA = {
     "note": "We warmly look forward to celebrating with you."
   },
   "details": {
-    "dressCode": "Haldi: Sunny Vibes · Cocktail: Evening Glamour · Wedding: Royal Traditional",
+    "dressCode": "Cocktail: Evening Glamour · Wedding: Royal Traditional",
     "giftPreference": "Your warm presence and heartfelt blessings are our greatest gift.",
     "blessing": {
       "message": "Your presence\nwill make our\ncelebrations complete.",
