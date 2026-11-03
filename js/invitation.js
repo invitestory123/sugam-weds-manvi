@@ -89,7 +89,14 @@
         
         ${data.couple.grandparents ? `
         <div class="elders-intro reveal">
-          <p class="grandparents-blessing">${text(data.couple.grandparents).replace(/\n/g, '<br>')}</p>
+          ${(() => {
+            const raw = String(data.couple.grandparents);
+            const lines = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+            if (lines.length >= 2) {
+              return `<p class="grandparents-blessing-lead">${text(lines[0])}</p><p class="grandparents-blessing-names">${text(lines.slice(1).join(' '))}</p>`;
+            }
+            return `<p class="grandparents-blessing">${text(raw)}</p>`;
+          })()}
         </div>
         ` : ''}
 
