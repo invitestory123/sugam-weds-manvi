@@ -77,7 +77,7 @@
       <section class="hero" aria-label="Wedding invitation">
         <img class="hero-art" src="${data.media.heroPoster ? text(safeURL(data.media.heroPoster)) : asset('hero-first.webp')}" alt="${text(theme.scene)}" decoding="async">
         <video class="hero-video" id="hero-video" muted loop playsinline preload="none" hidden></video>
-        <div class="hero-copy"><p class="occasion">${text(data.wedding.occasion || 'The Wedding of')}</p><p class="date">${text(data.wedding.dateLabel)}</p>
+        <div class="hero-copy"><p class="occasion">${text(data.wedding.occasion || 'The Wedding of')}</p>
           <h1 class="names" id="names" tabindex="-1"><span>${text(data.couple.first)}</span><i>&amp;</i><span>${text(data.couple.second)}</span></h1>
           <p class="hero-note">${text(data.couple.heroNote)}</p><a class="hero-link" href="#our-invitation">With love, you are invited</a>
         </div>
@@ -89,7 +89,7 @@
         
         ${data.couple.grandparents ? `
         <div class="elders-intro reveal">
-          <p class="grandparents-blessing">${text(data.couple.grandparents)}</p>
+          <p class="grandparents-blessing">${text(data.couple.grandparents).replace(/\n/g, '<br>')}</p>
         </div>
         ` : ''}
 
@@ -180,6 +180,35 @@
 
       ${data.rsvp ? `
       <section class="paper-section floral rsvp-section" aria-labelledby="rsvp-title">
+        ${data.rsvp.contacts ? `
+        <div class="rsvp-card rsvp-contact-card reveal">
+          ${data.rsvp.monogram ? `
+          <div class="rsvp-monogram" aria-hidden="true">
+            <span class="monogram-letters">${text(data.rsvp.monogram)}</span>
+          </div>
+          ` : ''}
+          <h2 class="script rsvp-couple-names" id="rsvp-title">${text(data.rsvp.coupleTitle || (data.couple.first + ' & ' + data.couple.second))}</h2>
+          <div class="rsvp-rule" aria-hidden="true"></div>
+          
+          <div class="rsvp-details-grid">
+            <div class="rsvp-col rsvp-left">
+              <h3 class="rsvp-heading">${text(data.rsvp.title || 'R.S.V.P:')}</h3>
+              <ul class="rsvp-contact-list">
+                ${(data.rsvp.contacts || []).map(c => `
+                  <li><span class="contact-name">${text(c.name)}</span> <span class="contact-sep">-</span> <a class="contact-phone" href="tel:${text(c.raw || c.phone.replace(/[^0-9+]/g, ''))}">${text(c.phone)}</a></li>
+                `).join('')}
+              </ul>
+            </div>
+
+            <div class="rsvp-col-divider" aria-hidden="true"></div>
+
+            <div class="rsvp-col rsvp-right">
+              <h3 class="rsvp-heading">${text(data.rsvp.regardsTitle || 'With Warm Regards:')}</h3>
+              <p class="rsvp-regards">${text(data.rsvp.regards || 'Family & Friends')}</p>
+            </div>
+          </div>
+        </div>
+        ` : `
         <div class="rsvp-card reveal"><span class="rsvp-kicker">Kindly reply</span>
           <svg class="rsvp-envelope" viewBox="0 0 48 36" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="3" width="44" height="30" rx="2"/><path d="m3 5 21 16L45 5M3 32l14-14m28 14L31 18"/></svg>
           <h2 class="script" id="rsvp-title">${text(data.rsvp?.heading || 'A place for you')}</h2>
@@ -187,6 +216,7 @@
           ${data.rsvp?.deadline ? `<p class="rsvp-deadline">Kindly reply by ${text(data.rsvp.deadline)}</p>` : ''}
           <form class="rsvp-form" id="rsvp-form"></form>
         </div>
+        `}
       </section>
       ` : ''}
 
