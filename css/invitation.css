@@ -585,3 +585,13 @@ body{font-size:20px;line-height:1.65}.names{font-size:clamp(64px,15vw,88px);line
     margin: 4px auto;
   }
 }
+
+.closing-minimal {
+  padding: 24px 20px 90px;
+  background: var(--paper);
+  min-height: auto;
+}
+.closing-minimal .closing-colophon {
+  background: transparent;
+  padding: 0;
+}

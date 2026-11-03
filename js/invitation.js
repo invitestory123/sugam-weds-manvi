@@ -79,7 +79,8 @@
         <video class="hero-video" id="hero-video" muted loop playsinline preload="none" hidden></video>
         <div class="hero-copy"><p class="occasion">${text(data.wedding.occasion || 'The Wedding of')}</p>
           <h1 class="names" id="names" tabindex="-1"><span>${text(data.couple.first)}</span><i>&amp;</i><span>${text(data.couple.second)}</span></h1>
-          <p class="hero-note">${text(data.couple.heroNote)}</p><a class="hero-link" href="#our-invitation">With love, you are invited</a>
+          ${data.couple.heroNote ? `<p class="hero-note">${text(data.couple.heroNote)}</p>` : ''}
+          <a class="hero-link" href="#our-invitation">With love, you are invited</a>
         </div>
       </section>
 
@@ -118,9 +119,11 @@
         </div>
         ` : ''}
 
+        ${(data.wedding.salutation || data.wedding.invitationNote) ? `
         <div class="rule" aria-hidden="true"></div>
         ${data.wedding.salutation ? `<p class="salutation-heading reveal">${text(data.wedding.salutation)}</p>` : ''}
-        <p class="invitation-note reveal">${text(data.wedding.invitationNote)}</p>
+        ${data.wedding.invitationNote ? `<p class="invitation-note reveal">${text(data.wedding.invitationNote)}</p>` : ''}
+        ` : ''}
       </section>
 
       <section class="paper-section countdown-section torn" aria-labelledby="countdown-title">
@@ -174,17 +177,6 @@
       </section>
       ` : ''}
 
-      ${data.details?.blessing ? `
-      <section class="paper-section floral blessing-section" aria-label="Family blessing">
-        <article class="blessing-card reveal">
-          <p class="blessing-message">${text(data.details.blessing.message).replace(/\n/g, '<br>')}</p>
-          <div class="blessing-ornament" aria-hidden="true"></div>
-          <p class="blessing-regards">${text(data.details.blessing.regards)}</p>
-          <h3 class="blessing-family">${text(data.details.blessing.family)}</h3>
-        </article>
-      </section>
-      ` : ''}
-
       ${data.rsvp ? `
       <section class="paper-section floral rsvp-section" aria-labelledby="rsvp-title">
         ${data.rsvp.contacts ? `
@@ -227,20 +219,7 @@
       </section>
       ` : ''}
 
-      <footer class="closing" aria-labelledby="closing-title">
-        <div class="closing-scene">
-          <img class="closing-art" src="${data.media.heroPoster ? text(safeURL(data.media.heroPoster)) : asset('hero-first.webp')}" alt="" width="720" height="1280" loading="lazy" decoding="async">
-          <div class="closing-copy reveal">
-            <p class="closing-eyebrow">The beginning of our forever</p>
-            <h2 class="closing-title" id="closing-title">With all<br><em>our love</em></h2>
-            <div class="closing-rule" aria-hidden="true"></div>
-            <p class="closing-names"><span>${text(data.couple.first)}</span><i>&amp;</i><span>${text(data.couple.second)}</span></p>
-            <p class="closing-date">${text(data.wedding.dateLabel)}</p>
-            <p class="closing-note">The day will be beautiful.<br>Even more so with you.</p>
-            ${data.wedding.familySignature ? `<p class="closing-family-sig">${text(data.wedding.familySignature)}</p>` : ''}
-          </div>
-          <p class="closing-caption">A little moment. A lifetime of love.</p>
-        </div>
+      <footer class="closing closing-minimal">
         <div class="closing-colophon">
           <button class="reopen" id="reopen">Open the envelope again <span aria-hidden="true">↺</span></button>
           <a class="dearly-signature" href="../" aria-label="Explore Dearly wedding invitations">Dearly<small>Made for your forever</small></a>
@@ -321,7 +300,7 @@
   opening.addEventListener('error',()=>{if(opened)finishOpening();});
   opening.addEventListener('timeupdate',()=>{if(Number.isFinite(opening.duration)&&opening.currentTime>=opening.duration-.8)finishOpening();});
   hero.addEventListener('error',()=>{hero.hidden=true;});
-  $('reopen').addEventListener('click',()=>{clearTimeout(fadeTimer);clearTimeout(openingTimer);window.scrollTo({top:0,behavior:'instant'});opened=false;ambience.setPaused(true);opening.pause();opening.currentTime=0;opening.hidden=true;hero.pause();hero.currentTime=0;$('entrance').hidden=false;$('entrance').classList.remove('leaving','opening');$('open').disabled=false;$('skip').hidden=true;$('invitation').inert=true;$('media-controls').hidden=true;document.body.classList.add('locked');$('open').focus();});
+  if ($('reopen')) $('reopen').addEventListener('click',()=>{clearTimeout(fadeTimer);clearTimeout(openingTimer);window.scrollTo({top:0,behavior:'instant'});opened=false;ambience.setPaused(true);opening.pause();opening.currentTime=0;opening.hidden=true;hero.pause();hero.currentTime=0;$('entrance').hidden=false;$('entrance').classList.remove('leaving','opening');$('open').disabled=false;$('skip').hidden=true;$('invitation').inert=true;$('media-controls').hidden=true;document.body.classList.add('locked');$('open').focus();});
   $('music').addEventListener('click',async()=>{if(audio.paused){try{await audio.play();$('music').textContent='Pause music';$('music').setAttribute('aria-pressed','true');}catch{notify('Music could not be played. Please try again.');}}else{audio.pause();$('music').textContent='Play music';$('music').setAttribute('aria-pressed','false');}});
   $('motion').addEventListener('click',()=>{if(reduced.matches)return;motionPaused=!motionPaused;syncMotion();});
   reduced.addEventListener('change',event=>{motionPaused=event.matches;if(event.matches && opened)finishOpening();syncMotion();});
@@ -356,7 +335,7 @@
         `DTEND:${stamp(end)}`,
         `SUMMARY:${icsEscape(data.couple.first+' & '+data.couple.second+' Wedding Celebrations')}`,
         `LOCATION:${icsEscape(primaryVenue.name+', '+primaryVenue.address)}`,
-        `DESCRIPTION:${icsEscape(data.wedding.invitationNote)}`,
+        `DESCRIPTION:${icsEscape(data.wedding.invitationNote || (data.couple.first+' & '+data.couple.second+' Wedding Celebrations'))}`,
         'END:VEVENT',
         'END:VCALENDAR'
       ];
